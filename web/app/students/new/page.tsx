@@ -13,6 +13,7 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Checkbox } from '@/components/ui/checkbox';
 import { ContextualBar } from '@/components/ui/contextual-bar';
 import { ConfirmationDialog } from '@/components/ui/confirmation-dialog';
+import { DatePicker } from '@/components/ui/date-picker';
 import { Student } from '@shared/types';
 import { saveStudent, getSettings } from '@/lib/storage';
 import { useTranslation } from '@/lib/hooks/useTranslation';
@@ -158,8 +159,8 @@ function NewStudentContent() {
   return (
     <div className="min-h-screen bg-background">
       {/* Contextual Bar */}
-      <div className="fixed top-0 left-0 right-0 z-40 bg-background border-b">
-        <div className="container mx-auto px-4 py-3">
+      <div className="fixed top-0 left-0 right-0 z-40 bg-background border-b safe-top-bar">
+        <div className="container mx-auto px-4 pb-3">
           <div className="flex items-center justify-between">
             <Button 
               variant="ghost" 
@@ -181,8 +182,8 @@ function NewStudentContent() {
         </div>
       </div>
 
-      {/* Add top padding to account for contextual bar */}
-      <div className="pt-[48px]">
+      {/* Add top padding to account for contextual bar and safe area */}
+      <div className="pt-20">
         {/* Main Content */}
         <main className="container mx-auto px-4 py-8">
         <Card className="max-w-3xl mx-auto">
@@ -239,23 +240,19 @@ function NewStudentContent() {
 
               <div className="space-y-2">
                 <Label htmlFor="birthday">{t('studentForm.birthday')}</Label>
-                <Input
-                  id="birthday"
-                  type="date"
-                  value={birthday ? birthday.toISOString().split('T')[0] : ''}
-                  onChange={(e) => setBirthday(e.target.value ? new Date(e.target.value) : undefined)}
-                  autoComplete="bday"
+                <DatePicker
+                  date={birthday}
+                  onDateChange={setBirthday}
+                  placeholder={t('studentPages.selectBirthday') || 'Select birthday'}
                 />
               </div>
 
               <div className="space-y-2">
                 <Label htmlFor="memberSince">{t('studentPages.memberSince')}</Label>
-                <Input
-                  id="memberSince"
-                  type="date"
-                  value={memberSince ? memberSince.toISOString().split('T')[0] : ''}
-                  onChange={(e) => setMemberSince(e.target.value ? new Date(e.target.value) : undefined)}
-                  autoComplete="off"
+                <DatePicker
+                  date={memberSince}
+                  onDateChange={setMemberSince}
+                  placeholder={t('studentPages.selectMemberSince') || 'Select member since date'}
                 />
               </div>
 

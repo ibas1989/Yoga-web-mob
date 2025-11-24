@@ -15,7 +15,7 @@ type SortDirection = 'asc' | 'desc';
 
 export function StudentsTableView() {
   const router = useRouter();
-  const { getCurrentLanguage } = useTranslation();
+  const { t, getCurrentLanguage } = useTranslation();
   const [students, setStudents] = useState<Student[]>([]);
   const [searchTerm, setSearchTerm] = useState('');
   const [sortField, setSortField] = useState<SortField>('name');
@@ -147,11 +147,11 @@ export function StudentsTableView() {
               <Input
                 id="students-table-search"
                 name="students-table-search"
-                placeholder="Search students..."
+                placeholder={t('ui.searchStudents')}
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
                 className="pl-10"
-                aria-label="Search students"
+                aria-label={t('ui.searchStudents')}
               />
             </div>
           </div>

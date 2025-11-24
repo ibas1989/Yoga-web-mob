@@ -1,6 +1,7 @@
 'use client';
 
 import React from 'react';
+import { useTranslation } from 'react-i18next';
 import { cn } from '@/lib/utils';
 
 interface BadgeProps {
@@ -20,6 +21,7 @@ interface BadgeProps {
  * @param maxCount - Maximum number to display (e.g., 99+ for counts over 99)
  */
 export function Badge({ count, className, maxCount = 99 }: BadgeProps) {
+  const { t } = useTranslation();
   // Don't render badge if count is 0 or negative
   if (count <= 0) return null;
   
@@ -38,7 +40,7 @@ export function Badge({ count, className, maxCount = 99 }: BadgeProps) {
         'hover:scale-110 transform',
         className
       )}
-      aria-label={`${count} pending tasks`}
+      aria-label={t('ui.pendingTasks', { count })}
       style={{
         animation: 'badgePulse 0.3s ease-in-out'
       }}

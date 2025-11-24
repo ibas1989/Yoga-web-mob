@@ -308,7 +308,10 @@ export function Calendar({ onDateSelect, onSessionClick, refreshTrigger }: Calen
                       <div
                         className="w-4 h-4 rounded-sm flex items-center justify-center text-xs font-medium text-white"
                         style={{ backgroundColor: '#B5B5BA' }}
-                        title={`${statusCounts.scheduled} scheduled session${statusCounts.scheduled !== 1 ? 's' : ''}`}
+                        title={statusCounts.scheduled === 1 
+                          ? t('ui.scheduledSessions', { count: statusCounts.scheduled })
+                          : t('ui.scheduledSessionsPlural', { count: statusCounts.scheduled })
+                        }
                       >
                         {statusCounts.scheduled}
                       </div>
@@ -319,7 +322,10 @@ export function Calendar({ onDateSelect, onSessionClick, refreshTrigger }: Calen
                       <div
                         className="w-4 h-4 rounded-sm flex items-center justify-center text-xs font-medium text-white"
                         style={{ backgroundColor: 'rgb(37, 99, 235)' }}
-                        title={`${statusCounts.completed} completed session${statusCounts.completed !== 1 ? 's' : ''}`}
+                        title={statusCounts.completed === 1 
+                          ? t('ui.completedSessions', { count: statusCounts.completed })
+                          : t('ui.completedSessionsPlural', { count: statusCounts.completed })
+                        }
                       >
                         {statusCounts.completed}
                       </div>
@@ -330,7 +336,10 @@ export function Calendar({ onDateSelect, onSessionClick, refreshTrigger }: Calen
                       <div
                         className="w-4 h-4 rounded-sm flex items-center justify-center text-xs font-medium text-white"
                         style={{ backgroundColor: 'rgb(249, 115, 22)' }}
-                        title={`${statusCounts.cancelled} cancelled session${statusCounts.cancelled !== 1 ? 's' : ''}`}
+                        title={statusCounts.cancelled === 1 
+                          ? t('ui.cancelledSessions', { count: statusCounts.cancelled })
+                          : t('ui.cancelledSessionsPlural', { count: statusCounts.cancelled })
+                        }
                       >
                         {statusCounts.cancelled}
                       </div>

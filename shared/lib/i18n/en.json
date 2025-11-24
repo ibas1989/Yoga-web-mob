@@ -72,6 +72,7 @@
     "age": "Age",
     "birthday": "Birthday",
     "description": "Description",
+    "tapToEdit": "Tap to edit",
     "studentGoals": "Student goals",
     "namePlaceholder": "Student name",
     "phonePlaceholder": "+1234567890",
@@ -161,7 +162,10 @@
     "noStudents": "No",
     "pleaseSelectStudent": "Please select at least one student",
     "balance": "Balance",
-    "removeStudent": "Remove {{studentName}}"
+    "removeStudent": "Remove {{studentName}}",
+    "noAttendeesAddedYet": "No attendees added yet",
+    "useAddStudentButton": "Use the \"+ Add Student\" button to add attendees",
+    "addStudentButton": "+ Add Student"
   },
   "completeSession": {
     "title": "Complete session",
@@ -190,6 +194,8 @@
     "name": "Name",
     "phone": "Phone",
     "noPhone": "No phone number",
+    "cannotMakeCall": "Cannot make phone call on this device",
+    "errorMakingCall": "Error making phone call",
     "weight": "Weight",
     "height": "Height",
     "notSpecified": "Not specified",
@@ -201,6 +207,7 @@
     "sessions": "sessions",
     "addBalanceTransaction": "Change Balance",
     "description": "Description",
+    "tapToViewFull": "Tap to view full description",
     "noDescriptionProvided": "No description provided",
     "notes": "Notes",
     "addNote": "Add note",
@@ -219,6 +226,8 @@
     "updatedBalance": "Updated balance",
     "page": "Page",
     "of": "of",
+    "previous": "Previous",
+    "next": "Next",
     "noBalanceTransactions": "No balance transactions recorded",
     "sessionHistory": "Session history",
     "sessionType": "Session type",
@@ -234,7 +243,12 @@
     "deleteNoteDescription": "Are you sure you want to delete this note? This action cannot be undone.",
     "noteDetails": "Note details",
     "noteDetailsDescription": "View and edit note details. You can modify the content or delete this note.",
-    "unsavedNoteChangesDescription": "You have unsaved changes. Are you sure you want to close this note?"
+    "unsavedNoteChangesDescription": "You have unsaved changes. Are you sure you want to close this note?",
+    "unsavedChanges": "Unsaved changes",
+    "discard": "Discard",
+    "pleaseEnterNoteContent": "Please enter note content",
+    "noteUpdated": "Note updated successfully",
+    "errorUpdatingNote": "Error updating note"
   },
   "transactionDetails": {
     "title": "Transaction details",
@@ -294,6 +308,8 @@
     "currentBalance": "Current balance",
     "balanceSystemManaged": "Balance is managed by the system through session attendance",
     "memberSince": "Member since",
+    "selectBirthday": "Select birthday",
+    "selectMemberSince": "Select member since date",
     "goalsAndFocusAreas": "Focus / Goals / Priorities",
     "selectGoalsForStudent": "Select goals and focus areas for this student",
     "unsavedChanges": "Unsaved changes",
@@ -409,7 +425,11 @@
     "studentCreated": "Student created successfully",
     "errorLoadingStudents": "Error loading students",
     "errorSavingSession": "Error saving session",
-    "errorCreatingStudent": "Error creating student"
+    "errorCreatingStudent": "Error creating student",
+    "invalidAmount": "Invalid amount",
+    "notSpecified": "Not specified",
+    "invalidDate": "Invalid date",
+    "invalidTime": "Invalid time"
   },
   "calendarDay": {
     "loading": "Loading...",
@@ -418,7 +438,8 @@
     "totalSessions": "Total sessions",
     "scheduled": "Scheduled",
     "completed": "Completed",
-    "canceled": "Canceled",
+    "cancelled": "Cancelled",
+    "canceled": "Cancelled",
     "clickToAddSession": "Click to add session at {{time}}",
     "session": "Session",
     "attendee": "attendee",
@@ -428,6 +449,44 @@
       "completed": "Completed",
       "cancelled": "Cancelled"
     }
+  },
+  "sessionComplete": {
+    "error": "Error",
+    "sessionNotFoundOrCompleted": "Session not found or already completed",
+    "failedToLoadSession": "Failed to load session",
+    "pleaseSelectAtLeastOneAttendee": "Please select at least one attendee",
+    "success": "Success",
+    "sessionCompletedSuccessfully": "Session completed successfully",
+    "ok": "OK",
+    "sessionNotFound": "Session not found",
+    "completeSession": "Complete Session",
+    "eachAttendeeDeducted": "Each attendee will be deducted {{count}} {{sessionText}}",
+    "sessionType": "Session Type",
+    "confirmAttendees": "Confirm Attendees",
+    "uncheckAnyoneWhoDidntAttend": "Uncheck anyone who didn't attend",
+    "currentBalance": "Current Balance",
+    "after": "After",
+    "attended": "✓ Attended",
+    "didNotAttend": "✗ Did not attend",
+    "totalAttendees": "Total Attendees"
+  },
+  "datePicker": {
+    "selectDate": "Select date",
+    "pickDate": "Pick a date",
+    "clear": "Clear",
+    "cancel": "Cancel",
+    "done": "Done"
+  },
+  "ui": {
+    "searchStudents": "Search students...",
+    "navigateTo": "Navigate to {{label}}",
+    "pendingTasks": "{{count}} pending tasks",
+    "scheduledSessions": "{{count}} scheduled session",
+    "scheduledSessionsPlural": "{{count}} scheduled sessions",
+    "completedSessions": "{{count}} completed session",
+    "completedSessionsPlural": "{{count}} completed sessions",
+    "cancelledSessions": "{{count}} cancelled session",
+    "cancelledSessionsPlural": "{{count}} cancelled sessions"
   },
   "newNoteDialog": {
     "title": "New Note",

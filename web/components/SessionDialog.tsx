@@ -255,7 +255,7 @@ export function SessionDialog({
               <Label htmlFor="startTime">Start Time</Label>
               <Select value={startTime} onValueChange={setStartTime}>
                 <SelectTrigger id="startTime">
-                  <SelectValue placeholder="Select start time" />
+                  <SelectValue placeholder={t('sessions.selectStartTime')} />
                 </SelectTrigger>
                 <SelectContent className="max-h-60">
                   {timeOptions.map((option) => (
@@ -270,7 +270,7 @@ export function SessionDialog({
               <Label htmlFor="duration">Session Length</Label>
               <Select value={duration} onValueChange={setDuration}>
                 <SelectTrigger id="duration">
-                  <SelectValue placeholder="Select duration" />
+                  <SelectValue placeholder={t('sessions.selectDuration')} />
                 </SelectTrigger>
                 <SelectContent>
                   {durationOptions.map((option) => (
@@ -291,7 +291,7 @@ export function SessionDialog({
             <Label htmlFor="sessionType">Session Type</Label>
             <Select value={sessionType} onValueChange={(value) => setSessionType(value as 'team' | 'individual')}>
               <SelectTrigger id="sessionType">
-                <SelectValue placeholder="Select session type" />
+                <SelectValue placeholder={t('sessions.selectSessionType')} />
               </SelectTrigger>
               <SelectContent>
                 <SelectItem value="team">Team</SelectItem>
@@ -381,11 +381,11 @@ export function SessionDialog({
                     id="student-search"
                     name="student-search"
                     type="text"
-                    placeholder="Search students..."
+                    placeholder={t('sessions.searchStudents')}
                     value={studentSearchQuery}
                     onChange={(e) => setStudentSearchQuery(e.target.value)}
                     className="h-9"
-                    aria-label="Search students"
+                    aria-label={t('sessions.searchStudents')}
                   />
                   <div className="border rounded-md p-3 space-y-2 max-h-40 overflow-y-auto">
                     {filteredAvailableStudents.map((student) => (
@@ -462,7 +462,7 @@ export function SessionDialog({
               id="notes"
               value={notes}
               onChange={handleNotesChange}
-              placeholder="Add any notes about this session..."
+              placeholder={t('sessions.addNotesPlaceholder')}
               className="min-h-[80px] resize-none overflow-hidden"
               rows={3}
             />

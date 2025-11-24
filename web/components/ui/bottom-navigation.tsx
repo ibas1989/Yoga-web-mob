@@ -170,7 +170,7 @@ export function BottomNavigation({ pathname, viewParam }: { pathname: string; vi
                   : 'text-gray-500 hover:text-gray-700 hover:bg-gray-50'
                 }
               `}
-              aria-label={`Navigate to ${item.label}`}
+              aria-label={t('ui.navigateTo', { label: item.label })}
             >
               <div className="relative">
                 <Icon className={`h-6 w-6 mb-1 transition-colors duration-300 ${

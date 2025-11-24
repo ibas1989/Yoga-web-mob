@@ -178,7 +178,7 @@ export function NoteDetailsDialog({
     const dateObj = date instanceof Date ? date : new Date(date);
     
     // Check if the date is valid
-    if (isNaN(dateObj.getTime())) return 'Invalid date';
+    if (isNaN(dateObj.getTime())) return t('validation.invalidDate');
     
     const locale = getCurrentLanguage() === 'ru' ? 'ru-RU' : 'en-US';
     return dateObj.toLocaleDateString(locale, {
@@ -195,7 +195,7 @@ export function NoteDetailsDialog({
     const dateObj = date instanceof Date ? date : new Date(date);
     
     // Check if the date is valid
-    if (isNaN(dateObj.getTime())) return 'Invalid time';
+    if (isNaN(dateObj.getTime())) return t('validation.invalidTime');
     
     const locale = getCurrentLanguage() === 'ru' ? 'ru-RU' : 'en-US';
     return dateObj.toLocaleTimeString(locale, {

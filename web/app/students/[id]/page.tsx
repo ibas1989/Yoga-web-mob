@@ -20,10 +20,10 @@ import { NewNoteDialog } from '@/components/NewNoteDialog';
 import { formatBalanceForDisplay, getAgeInYearsAndMonths, getMemberSinceAge, getSessionTypeDisplayName, getSessionCount, getAgeInYearsAndMonthsTranslated, getMemberSinceAgeTranslated, formatDateLocalized } from '@shared/utils/dateUtils';
 
 // Custom formatting functions for the new layout
-const formatDateForTable = (date: Date | string | null | undefined) => {
-  if (!date) return { dayMonth: 'Not specified', year: '' };
+const formatDateForTable = (date: Date | string | null | undefined, t: any) => {
+  if (!date) return { dayMonth: t('validation.notSpecified'), year: '' };
   const dateObj = date instanceof Date ? date : new Date(date);
-  if (isNaN(dateObj.getTime())) return { dayMonth: 'Invalid date', year: '' };
+  if (isNaN(dateObj.getTime())) return { dayMonth: t('validation.invalidDate'), year: '' };
   
   const day = dateObj.getDate();
   const month = dateObj.toLocaleDateString('en-US', { month: 'short' });
@@ -35,13 +35,13 @@ const formatDateForTable = (date: Date | string | null | undefined) => {
   };
 };
 
-const formatTimeForTable = (timeString: string | null | undefined) => {
-  if (!timeString) return { startTime: 'Not specified', endTime: '' };
+const formatTimeForTable = (timeString: string | null | undefined, t: any) => {
+  if (!timeString) return { startTime: t('validation.notSpecified'), endTime: '' };
   
   if (timeString.includes('-')) {
     const [start, end] = timeString.split(' - ');
     return {
-      startTime: start || 'Not specified',
+      startTime: start || t('validation.notSpecified'),
       endTime: end || ''
     };
   } else {
@@ -172,7 +172,7 @@ export default function StudentDetailsPage() {
   const formatDate = (date: Date | string | null | undefined) => {
     if (!date) return t('studentDetails.notSpecified');
     const dateObj = date instanceof Date ? date : new Date(date);
-    if (isNaN(dateObj.getTime())) return 'Invalid date';
+    if (isNaN(dateObj.getTime())) return t('validation.invalidDate');
     const locale = getCurrentLanguage() === 'ru' ? 'ru-RU' : 'en-US';
     return new Intl.DateTimeFormat(locale, {
       year: 'numeric',
@@ -184,7 +184,7 @@ export default function StudentDetailsPage() {
   const formatTime = (date: Date | string | null | undefined) => {
     if (!date) return t('studentDetails.notSpecified');
     const dateObj = date instanceof Date ? date : new Date(date);
-    if (isNaN(dateObj.getTime())) return 'Invalid time';
+    if (isNaN(dateObj.getTime())) return t('validation.invalidTime');
     const locale = getCurrentLanguage() === 'ru' ? 'ru-RU' : 'en-US';
     return new Intl.DateTimeFormat(locale, {
       hour: '2-digit',
@@ -357,8 +357,8 @@ export default function StudentDetailsPage() {
     return (
       <div className="min-h-screen bg-background">
         {/* Mobile-friendly header with back button */}
-        <div className="sticky top-0 z-40 bg-background border-b">
-          <div className="container mx-auto px-4 py-3">
+        <div className="sticky top-0 z-40 bg-background border-b safe-top-bar">
+          <div className="container mx-auto px-4 pb-3">
             <div className="flex items-center justify-between">
               <Button 
                 variant="ghost" 
@@ -399,8 +399,8 @@ export default function StudentDetailsPage() {
   return (
     <div className="min-h-screen bg-background" ref={swipeRef}>
       {/* Mobile-friendly header with back button */}
-      <div className="sticky top-0 z-40 bg-background border-b">
-        <div className="container mx-auto px-4 py-3">
+      <div className="sticky top-0 z-40 bg-background border-b safe-top-bar">
+        <div className="container mx-auto px-4 pb-3">
           <div className="flex items-center justify-between">
             <Button 
               variant="ghost" 
@@ -702,16 +702,16 @@ export default function StudentDetailsPage() {
                                 <div className="flex items-center text-sm">
                                   <Calendar className="mr-1 text-muted-foreground flex-shrink-0" style={{ width: '16px', height: '16px', minWidth: '16px', minHeight: '16px', maxWidth: '16px', maxHeight: '16px' }} />
                                   <div className="flex flex-col">
-                                    <span>{formatDateForTable(transaction.date).dayMonth}</span>
-                                    <span className="text-muted-foreground text-xs">{formatDateForTable(transaction.date).year}</span>
+                                    <span>{formatDateForTable(transaction.date, t).dayMonth}</span>
+                                    <span className="text-muted-foreground text-xs">{formatDateForTable(transaction.date, t).year}</span>
                                   </div>
                                 </div>
                                 <div className="flex items-center text-sm text-muted-foreground">
                                   <Clock className="mr-1 text-muted-foreground flex-shrink-0" style={{ width: '16px', height: '16px', minWidth: '16px', minHeight: '16px', maxWidth: '16px', maxHeight: '16px' }} />
                                   <div className="flex flex-col">
-                                    <span>{formatTimeForTable(formatTime(transaction.date)).startTime}</span>
-                                    {formatTimeForTable(formatTime(transaction.date)).endTime && (
-                                      <span className="text-xs">{formatTimeForTable(formatTime(transaction.date)).endTime}</span>
+                                    <span>{formatTimeForTable(formatTime(transaction.date), t).startTime}</span>
+                                    {formatTimeForTable(formatTime(transaction.date), t).endTime && (
+                                      <span className="text-xs">{formatTimeForTable(formatTime(transaction.date), t).endTime}</span>
                                     )}
                                   </div>
                                 </div>
@@ -802,16 +802,16 @@ export default function StudentDetailsPage() {
                                 <div className="flex items-center text-sm">
                                   <Calendar className="mr-1 text-muted-foreground flex-shrink-0" style={{ width: '16px', height: '16px', minWidth: '16px', minHeight: '16px', maxWidth: '16px', maxHeight: '16px' }} />
                                   <div className="flex flex-col">
-                                    <span>{formatDateForTable(session.date).dayMonth}</span>
-                                    <span className="text-muted-foreground text-xs">{formatDateForTable(session.date).year}</span>
+                                    <span>{formatDateForTable(session.date, t).dayMonth}</span>
+                                    <span className="text-muted-foreground text-xs">{formatDateForTable(session.date, t).year}</span>
                                   </div>
                                 </div>
                                 <div className="flex items-center text-sm text-muted-foreground">
                                   <Clock className="mr-1 text-muted-foreground flex-shrink-0" style={{ width: '16px', height: '16px', minWidth: '16px', minHeight: '16px', maxWidth: '16px', maxHeight: '16px' }} />
                                   <div className="flex flex-col">
-                                    <span>{formatTimeForTable(`${session.startTime} - ${session.endTime}`).startTime}</span>
-                                    {formatTimeForTable(`${session.startTime} - ${session.endTime}`).endTime && (
-                                      <span className="text-xs">{formatTimeForTable(`${session.startTime} - ${session.endTime}`).endTime}</span>
+                                    <span>{formatTimeForTable(`${session.startTime} - ${session.endTime}`, t).startTime}</span>
+                                    {formatTimeForTable(`${session.startTime} - ${session.endTime}`, t).endTime && (
+                                      <span className="text-xs">{formatTimeForTable(`${session.startTime} - ${session.endTime}`, t).endTime}</span>
                                     )}
                                   </div>
                                 </div>

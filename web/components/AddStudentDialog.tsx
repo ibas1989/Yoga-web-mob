@@ -4,10 +4,6 @@ import React, { useState, useEffect } from 'react';
 import {
   Dialog,
   DialogContent,
-  DialogDescription,
-  DialogFooter,
-  DialogHeader,
-  DialogTitle,
 } from './ui/dialog';
 import { Button } from './ui/button';
 import { Input } from './ui/input';
@@ -16,7 +12,7 @@ import { Checkbox } from './ui/checkbox';
 import { Card, CardContent } from './ui/card';
 import { Student } from '@shared/types';
 import { saveStudent, getSettings, getStudents } from '@/lib/storage';
-import { UserPlus, Users } from 'lucide-react';
+import { UserPlus, Users, ArrowLeft, Save } from 'lucide-react';
 import { useTranslation } from '@/lib/hooks/useTranslation';
 
 interface AddStudentDialogProps {
@@ -159,16 +155,40 @@ export function AddStudentDialog({
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange} modal={true}>
-      <DialogContent className="max-w-2xl w-[95vw] max-h-[90vh] flex flex-col z-[60]">
-        <DialogHeader className="flex-shrink-0">
-          <DialogTitle>{t('studentForm.addStudentToSession')}</DialogTitle>
-          <DialogDescription>
-            {t('studentForm.selectOrCreateStudent')}
-          </DialogDescription>
-        </DialogHeader>
+      <DialogContent className="max-w-2xl w-[95vw] max-h-[90vh] flex flex-col z-[60] p-0">
+        {/* Contextual Bar - matching other pages */}
+        <div className="sticky top-0 z-40 bg-background border-b safe-top-bar">
+          <div className="container mx-auto px-4 pb-3">
+            <div className="flex items-center justify-between">
+              <Button 
+                variant="ghost" 
+                size="sm" 
+                onClick={() => onOpenChange(false)}
+                className="flex items-center gap-2"
+              >
+                <ArrowLeft className="h-4 w-4" />
+                {t('studentPages.back')}
+              </Button>
+              <h2 className="text-base font-medium text-muted-foreground">
+                {t('studentForm.addStudentToSession')}
+              </h2>
+              {mode === 'create' && (
+                <Button onClick={handleSave}>
+                  <Save className="h-4 w-4 mr-2" />
+                  {t('studentForm.createAndAdd')}
+                </Button>
+              )}
+              {mode === 'select' && (
+                <div className="w-20">{/* Spacer for alignment */}</div>
+              )}
+            </div>
+          </div>
+        </div>
 
-        {/* Mode Toggle */}
-        <div className="flex gap-2 border-b pb-4">
+        {/* Add top padding to account for contextual bar */}
+        <div className="pt-20">
+          {/* Mode Toggle */}
+          <div className="flex gap-2 border-b pb-4 px-4">
           <Button
             variant={mode === 'select' ? 'default' : 'outline'}
             onClick={() => setMode('select')}
@@ -185,9 +205,9 @@ export function AddStudentDialog({
             <UserPlus className="h-4 w-4 mr-2" />
             {t('studentForm.createNew')}
           </Button>
-        </div>
+          </div>
 
-        <div className="flex-1 overflow-y-auto px-1">
+          <div className="flex-1 overflow-y-auto px-1">
           {mode === 'select' ? (
             <div className="space-y-4 py-4">
               {/* Search */}
@@ -336,7 +356,7 @@ export function AddStudentDialog({
             </div>
 
             <div className="space-y-2">
-              <Label>Student Goals</Label>
+              <Label>{t('studentForm.studentGoals')}</Label>
               <div className="border rounded-md p-4 space-y-3 max-h-48 overflow-y-auto">
                 {availableGoals.map((goal) => (
                   <div key={goal} className="flex items-center space-x-2">
@@ -357,16 +377,8 @@ export function AddStudentDialog({
               </div>
             </div>
           )}
+          </div>
         </div>
-
-        <DialogFooter className="flex-shrink-0 border-t pt-4 mt-4">
-          <Button variant="outline" onClick={() => onOpenChange(false)}>
-            {t('studentForm.cancel')}
-          </Button>
-          {mode === 'create' && (
-            <Button onClick={handleSave}>{t('studentForm.createAndAdd')}</Button>
-          )}
-        </DialogFooter>
       </DialogContent>
     </Dialog>
   );

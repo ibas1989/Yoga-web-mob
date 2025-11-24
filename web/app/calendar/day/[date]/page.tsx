@@ -220,7 +220,7 @@ export default function CalendarDayViewPage() {
               <CardContent className="p-2">
                 <div className="flex items-center justify-between">
                   <div>
-                    <p className="text-xs text-muted-foreground">{t('calendarDay.canceled')}</p>
+                    <p className="text-xs text-muted-foreground">{t('calendarDay.cancelled')}</p>
                     <p className="text-lg font-bold text-red-600">{cancelledCount}</p>
                   </div>
                   <XCircle className="h-5 w-5 text-red-600 opacity-50" />

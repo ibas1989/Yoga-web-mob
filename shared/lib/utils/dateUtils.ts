@@ -2,7 +2,7 @@
  * Utility functions for date calculations and formatting
  */
 
-import { TranslationKeys, TranslationParams } from '@/lib/i18n/types';
+import { TranslationKeys, TranslationParams } from '../i18n/types';
 
 /**
  * Calculate age based on birth date
@@ -418,4 +418,29 @@ export function formatTimeString(timeString: string | null | undefined, locale: 
   }
   
   return 'Invalid time';
+}
+
+/**
+ * Check if a session's end time has passed
+ * @param session - The session to check
+ * @returns True if the session's end time has passed, false otherwise
+ */
+export function isSessionEndTimePassed(session: any): boolean {
+  if (!session || !session.date || !session.endTime) return false;
+  
+  try {
+    const now = new Date();
+    const sessionDate = new Date(session.date);
+    
+    // Create a date object for the session's end time on the session date
+    const [endHours, endMinutes] = session.endTime.split(':').map(Number);
+    const sessionEndDateTime = new Date(sessionDate);
+    sessionEndDateTime.setHours(endHours, endMinutes, 0, 0);
+    
+    // Check if current time is past the session's end time
+    return now > sessionEndDateTime;
+  } catch (error) {
+    console.error('Error checking session end time:', error);
+    return false;
+  }
 }

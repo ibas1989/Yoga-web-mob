@@ -72,6 +72,7 @@
     "age": "Возраст",
     "birthday": "День рождения",
     "description": "Описание",
+    "tapToEdit": "Нажмите для редактирования",
     "studentGoals": "Цели студента",
     "namePlaceholder": "Имя студента",
     "phonePlaceholder": "+1234567890",
@@ -161,7 +162,10 @@
     "noStudents": "Нет",
     "pleaseSelectStudent": "Пожалуйста, выберите хотя бы одного студента",
     "balance": "Баланс",
-    "removeStudent": "Удалить {{studentName}}"
+    "removeStudent": "Удалить {{studentName}}",
+    "noAttendeesAddedYet": "Участники еще не добавлены",
+    "useAddStudentButton": "Используйте кнопку \"+ Добавить студента\" для добавления участников",
+    "addStudentButton": "+ Добавить студента"
   },
   "completeSession": {
     "title": "Завершить занятие",
@@ -190,6 +194,8 @@
     "name": "Имя",
     "phone": "Телефон",
     "noPhone": "Нет номера телефона",
+    "cannotMakeCall": "Невозможно совершить звонок на этом устройстве",
+    "errorMakingCall": "Ошибка при совершении звонка",
     "weight": "Вес",
     "height": "Рост",
     "notSpecified": "Не указано",
@@ -201,6 +207,7 @@
     "sessions": "занятий",
     "addBalanceTransaction": "Изменить Баланс",
     "description": "Описание",
+    "tapToViewFull": "Нажмите, чтобы просмотреть полное описание",
     "noDescriptionProvided": "Описание не предоставлено",
     "notes": "Заметки",
     "addNote": "Добавить заметку",
@@ -219,6 +226,8 @@
     "updatedBalance": "Баланс после",
     "page": "Страница",
     "of": "из",
+    "previous": "Назад",
+    "next": "Вперед",
     "noBalanceTransactions": "Транзакции баланса не записаны",
     "sessionHistory": "История занятий",
     "sessionType": "Тип занятия",
@@ -234,7 +243,12 @@
     "deleteNoteDescription": "Вы уверены, что хотите удалить эту заметку? Это действие нельзя отменить.",
     "noteDetails": "Детали заметки",
     "noteDetailsDescription": "Просмотр и редактирование заметки. Вы можете изменить содержимое или удалить эту заметку.",
-    "unsavedNoteChangesDescription": "У вас есть несохраненные изменения. Вы уверены, что хотите закрыть эту заметку?"
+    "unsavedNoteChangesDescription": "У вас есть несохраненные изменения. Вы уверены, что хотите закрыть эту заметку?",
+    "unsavedChanges": "Несохраненные изменения",
+    "discard": "Отменить",
+    "pleaseEnterNoteContent": "Пожалуйста, введите содержимое заметки",
+    "noteUpdated": "Заметка успешно обновлена",
+    "errorUpdatingNote": "Ошибка при обновлении заметки"
   },
   "transactionDetails": {
     "title": "Детали транзакции",
@@ -294,6 +308,8 @@
     "currentBalance": "Текущий баланс",
     "balanceSystemManaged": "Баланс управляется системой через посещаемость занятий",
     "memberSince": "Начал(а) заниматься",
+    "selectBirthday": "Выберите дату рождения",
+    "selectMemberSince": "Выберите дату начала занятий",
     "goalsAndFocusAreas": "Фокус / Цели / Приоритеты",
     "selectGoalsForStudent": "Выберите цели и области фокуса для этого студента",
     "unsavedChanges": "Несохраненные изменения",
@@ -409,7 +425,11 @@
     "studentCreated": "Студент успешно создан",
     "errorLoadingStudents": "Ошибка загрузки студентов",
     "errorSavingSession": "Ошибка сохранения занятия",
-    "errorCreatingStudent": "Ошибка создания студента"
+    "errorCreatingStudent": "Ошибка создания студента",
+    "invalidAmount": "Неверная сумма",
+    "notSpecified": "Не указано",
+    "invalidDate": "Неверная дата",
+    "invalidTime": "Неверное время"
   },
   "calendarDay": {
     "loading": "Загрузка...",
@@ -418,6 +438,7 @@
     "totalSessions": "Всего занятий",
     "scheduled": "Запланировано",
     "completed": "Завершено",
+    "cancelled": "Отменено",
     "canceled": "Отменено",
     "clickToAddSession": "Нажмите, чтобы добавить занятие в {{time}}",
     "session": "Занятие",
@@ -428,6 +449,44 @@
       "completed": "Завершено",
       "cancelled": "Отменено"
     }
+  },
+  "sessionComplete": {
+    "error": "Ошибка",
+    "sessionNotFoundOrCompleted": "Занятие не найдено или уже завершено",
+    "failedToLoadSession": "Не удалось загрузить занятие",
+    "pleaseSelectAtLeastOneAttendee": "Пожалуйста, выберите хотя бы одного участника",
+    "success": "Успех",
+    "sessionCompletedSuccessfully": "Занятие успешно завершено",
+    "ok": "ОК",
+    "sessionNotFound": "Занятие не найдено",
+    "completeSession": "Завершить занятие",
+    "eachAttendeeDeducted": "С каждого участника будет списано {{count}} {{sessionText}}",
+    "sessionType": "Тип занятия",
+    "confirmAttendees": "Подтвердить участников",
+    "uncheckAnyoneWhoDidntAttend": "Снимите галочку с тех, кто не посетил",
+    "currentBalance": "Текущий баланс",
+    "after": "После",
+    "attended": "✓ Посетил",
+    "didNotAttend": "✗ Не посетил",
+    "totalAttendees": "Всего участников"
+  },
+  "datePicker": {
+    "selectDate": "Выберите дату",
+    "pickDate": "Выберите дату",
+    "clear": "Очистить",
+    "cancel": "Отмена",
+    "done": "Готово"
+  },
+  "ui": {
+    "searchStudents": "Поиск студентов...",
+    "navigateTo": "Перейти к {{label}}",
+    "pendingTasks": "{{count}} ожидающих задач",
+    "scheduledSessions": "{{count}} запланированное занятие",
+    "scheduledSessionsPlural": "{{count}} запланированных занятий",
+    "completedSessions": "{{count}} завершенное занятие",
+    "completedSessionsPlural": "{{count}} завершенных занятий",
+    "cancelledSessions": "{{count}} отмененное занятие",
+    "cancelledSessionsPlural": "{{count}} отмененных занятий"
   },
   "newNoteDialog": {
     "title": "Новая заметка",

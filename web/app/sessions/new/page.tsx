@@ -256,16 +256,16 @@ function NewSessionContent({ dateParam, timeParam, returnTo }: { dateParam: stri
   // Helper function to format balance as session count
   const formatBalanceAsSessionCount = (balance: number): string => {
     const sessionCount = Math.round(balance);
-    const plural = Math.abs(sessionCount) !== 1 ? 's' : '';
-    return `${sessionCount} session${plural}`;
+    const sessionText = Math.abs(sessionCount) === 1 ? t('common.session') : t('common.sessions');
+    return `${sessionCount} ${sessionText}`;
   };
 
 
   return (
     <div className="min-h-screen bg-background">
       {/* Contextual Bar */}
-      <div className="fixed top-0 left-0 right-0 z-40 bg-background border-b">
-        <div className="container mx-auto px-4 py-3">
+      <div className="fixed top-0 left-0 right-0 z-40 bg-background border-b safe-top-bar">
+        <div className="container mx-auto px-4 pb-3">
           <div className="flex items-center justify-between">
             <Button 
               variant="ghost" 
@@ -285,8 +285,8 @@ function NewSessionContent({ dateParam, timeParam, returnTo }: { dateParam: stri
         </div>
       </div>
 
-      {/* Add top padding to account for contextual bar */}
-      <div className="pt-[48px]">
+      {/* Add top padding to account for contextual bar and safe area */}
+      <div className="pt-20">
         {/* Main Content */}
         <main className="container mx-auto px-4 py-8">
         <Card className="max-w-3xl mx-auto">
@@ -504,8 +504,9 @@ function NewSessionContent({ dateParam, timeParam, returnTo }: { dateParam: stri
 }
 
 export default function NewSessionPage() {
+  const { t } = useTranslation();
   return (
-    <Suspense fallback={<div>Loading...</div>}>
+    <Suspense fallback={<div>{t('calendarDay.loading')}</div>}>
       <NewSessionContentWithParams />
     </Suspense>
   );

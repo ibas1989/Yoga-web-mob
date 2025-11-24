@@ -1,13 +1,11 @@
-import i18n from 'i18next';
-import { initReactI18next } from 'react-i18next';
-import LanguageDetector from 'i18next-browser-languagedetector';
-import { safeStorage } from '../hydrationUtils';
+// Shared i18n configuration - platform-agnostic
+// Platform-specific initialization should be done in web/lib/i18n.ts or mobile/lib/i18n.ts
 
-// Import translation files
+// Export translation resources for use in platform-specific i18n initialization
 import enTranslations from './en.json';
 import ruTranslations from './ru.json';
 
-const resources = {
+export const translationResources = {
   en: {
     translation: enTranslations,
   },
@@ -16,22 +14,5 @@ const resources = {
   },
 };
 
-i18n
-  .use(LanguageDetector)
-  .use(initReactI18next)
-  .init({
-    resources,
-    fallbackLng: 'en',
-    debug: process.env.NODE_ENV === 'development',
-    
-    interpolation: {
-      escapeValue: false, // React already does escaping
-    },
-    
-    detection: {
-      order: safeStorage.isAvailable() ? ['localStorage', 'navigator', 'htmlTag'] : ['navigator', 'htmlTag'],
-      caches: safeStorage.isAvailable() ? ['localStorage'] : [],
-    },
-  });
-
-export default i18n;
+// Export types
+export * from './types';
