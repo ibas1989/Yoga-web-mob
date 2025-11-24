@@ -3,7 +3,7 @@
  */
 
 import { Student } from '@shared/types';
-import { calculateAge, formatBalanceAsInteger, getAgeFromBirthDate, formatBalanceForDisplay } from './dateUtils';
+import { calculateAge, formatBalanceAsInteger, getAgeFromBirthDate, formatBalanceForDisplay } from '@shared/utils/dateUtils';
 
 /**
  * Test age calculation with various birth dates
