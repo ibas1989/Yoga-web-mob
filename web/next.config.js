@@ -23,6 +23,9 @@ const nextConfig = {
   // Fix for Next.js 15 static file serving
   experimental: {
     externalDir: true,
+    outputFileTracingIncludes: {
+      '/*': ['../node_modules/next/dist/compiled/**/*'],
+    },
     optimizePackageImports: ['lucide-react', '@radix-ui/react-dialog', '@radix-ui/react-select', '@radix-ui/react-checkbox', '@radix-ui/react-label', '@radix-ui/react-slot'],
   },
   // Fix static asset serving issues
