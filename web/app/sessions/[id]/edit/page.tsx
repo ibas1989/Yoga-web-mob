@@ -26,8 +26,8 @@ import { useTranslation } from '@/lib/hooks/useTranslation';
 
 export default function EditSessionPage() {
   const router = useRouter();
-  const params = useParams();
-  const sessionId = params.id as string;
+  const params = useParams<{ id?: string }>();
+  const sessionId = (params?.id ?? '') as string;
   const { t, getCurrentLanguage } = useTranslation();
   
   // Get return URL from query parameters if provided

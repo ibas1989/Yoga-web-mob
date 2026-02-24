@@ -15,8 +15,8 @@ import { useMobileSwipe } from '@/lib/hooks/useMobileSwipe';
 import { useTranslation } from '@/lib/hooks/useTranslation';
 
 function SessionDetailsPageWithParams() {
-  const params = useParams();
-  const sessionId = params.id as string;
+  const params = useParams<{ id?: string }>();
+  const sessionId = (params?.id ?? '') as string;
   
   // Get return URL from query parameters if provided
   const searchParams = new URLSearchParams(typeof window !== 'undefined' ? window.location.search : '');

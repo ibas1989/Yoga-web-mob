@@ -32,9 +32,9 @@ function NewSessionContentWithParams() {
   const searchParams = useSearchParams();
   
   // Get date and time from query parameters if provided
-  const dateParam = searchParams.get('date');
-  const timeParam = searchParams.get('time');
-  const returnTo = searchParams.get('returnTo');
+  const dateParam = searchParams?.get('date') ?? null;
+  const timeParam = searchParams?.get('time') ?? null;
+  const returnTo = searchParams?.get('returnTo') ?? null;
   
   return <NewSessionContent dateParam={dateParam} timeParam={timeParam} returnTo={returnTo} />;
 }

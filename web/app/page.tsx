@@ -17,8 +17,8 @@ import { useNavigationSwipe } from '@/lib/hooks/useMobileSwipe';
 function HomeContentWithParams() {
   const searchParams = useSearchParams();
   
-  // Get view from URL parameters
-  const viewParam = searchParams.get('view');
+  // Get view from URL parameters (defensive against null in type defs)
+  const viewParam = searchParams?.get('view') ?? null;
   const initialView = (viewParam === 'students' || viewParam === 'tasks' || viewParam === 'settings' || viewParam === 'calendar') 
     ? viewParam as 'calendar' | 'students' | 'tasks' | 'settings'
     : 'calendar';

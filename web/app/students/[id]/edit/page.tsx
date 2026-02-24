@@ -19,8 +19,8 @@ import { useTranslation } from '@/lib/hooks/useTranslation';
 export default function EditStudentPage() {
   const { t, getCurrentLanguage } = useTranslation();
   const router = useRouter();
-  const params = useParams();
-  const studentId = params.id as string;
+  const params = useParams<{ id?: string }>();
+  const studentId = (params?.id ?? '') as string;
 
   const [originalStudent, setOriginalStudent] = useState<Student | null>(null);
   const [availableGoals, setAvailableGoals] = useState<string[]>([]);
