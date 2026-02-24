@@ -25,7 +25,7 @@ import { Checkbox } from './ui/checkbox';
 import { Textarea } from './ui/textarea';
 import { AddStudentDialog } from './AddStudentDialog';
 import { Student, Session } from '@shared/types';
-import { getStudents, getSettings, saveSession } from '@/lib/storage';
+import { getStudents, getSettings, saveSession, getSessions } from '@/lib/storage';
 import { useTranslation } from '@/lib/hooks/useTranslation';
 
 interface SessionDialogProps {
@@ -52,6 +52,7 @@ export function SessionDialog({
   const [availableGoals, setAvailableGoals] = useState<string[]>([]);
   const [defaultTeamCharge, setDefaultTeamCharge] = useState(1);
   const [defaultIndividualCharge, setDefaultIndividualCharge] = useState(2);
+  const [studentLastUsedMap, setStudentLastUsedMap] = useState<Record<string, number>>({});
   
   const [startTime, setStartTime] = useState('09:00');
   const [duration, setDuration] = useState('60'); // Duration in minutes
@@ -112,13 +113,34 @@ export function SessionDialog({
     }
   }, [lastAddedStudentId, students]);
 
+  const buildStudentLastUsedMap = (sessions: Session[]): Record<string, number> => {
+    const map: Record<string, number> = {};
+
+    sessions.forEach((session) => {
+      const sessionTime =
+        session.date instanceof Date ? session.date.getTime() : new Date(session.date).getTime();
+
+      session.studentIds.forEach((studentId) => {
+        const existingTime = map[studentId];
+        if (existingTime === undefined || sessionTime > existingTime) {
+          map[studentId] = sessionTime;
+        }
+      });
+    });
+
+    return map;
+  };
+
   const loadData = () => {
     const loadedStudents = getStudents();
     const settings = getSettings();
+    const sessions = getSessions();
+
     setStudents(loadedStudents);
     setAvailableGoals(settings.availableGoals);
     setDefaultTeamCharge(settings.defaultTeamSessionCharge ?? 1);
     setDefaultIndividualCharge(settings.defaultIndividualSessionCharge ?? 2);
+    setStudentLastUsedMap(buildStudentLastUsedMap(sessions));
   };
 
   const resetForm = () => {
@@ -228,10 +250,20 @@ export function SessionDialog({
   // Filter students based on search query - only search by name after 2+ characters
   const filteredAvailableStudents = students
     .filter(student => !selectedStudentIds.includes(student.id))
-    .filter(student => 
-      studentSearchQuery.length < 2 || 
+    .filter(student =>
+      studentSearchQuery.length < 2 ||
       student.name.toLowerCase().includes(studentSearchQuery.toLowerCase())
-    );
+    )
+    .sort((a, b) => {
+      const lastUsedA = studentLastUsedMap[a.id] ?? 0;
+      const lastUsedB = studentLastUsedMap[b.id] ?? 0;
+
+      if (lastUsedA === lastUsedB) {
+        return a.name.localeCompare(b.name);
+      }
+
+      return lastUsedB - lastUsedA;
+    });
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>

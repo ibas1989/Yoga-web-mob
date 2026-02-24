@@ -1,6 +1,6 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { Student, Session, AppSettings, StudentNote, BalanceTransaction } from '@shared/types';
-import { calculateAge, formatBalanceAsInteger, generateTransactionReason } from '@shared/utils/dateUtils';
+import { calculateAge, formatBalanceAsInteger } from '@shared/utils/dateUtils';
 
 const STUDENTS_KEY = 'yoga_tracker_students';
 const SESSIONS_KEY = 'yoga_tracker_sessions';
