@@ -4,14 +4,15 @@ import React, { useState, useEffect } from 'react';
 import {
   Dialog,
   DialogContent,
+  DialogTitle,
 } from './ui/dialog';
 import { Button } from './ui/button';
 import { Input } from './ui/input';
 import { Label } from './ui/label';
 import { Checkbox } from './ui/checkbox';
 import { Card, CardContent } from './ui/card';
-import { Student } from '@shared/types';
-import { saveStudent, getSettings, getStudents } from '@/lib/storage';
+import { Student, Session } from '@shared/types';
+import { saveStudent, getSettings, getStudents, getSessions } from '@/lib/storage';
 import { UserPlus, Users, ArrowLeft, Save } from 'lucide-react';
 import { useTranslation } from '@/lib/hooks/useTranslation';
 
@@ -31,6 +32,7 @@ export function AddStudentDialog({
   const { t } = useTranslation();
   const [mode, setMode] = useState<'select' | 'create'>('select');
   const [allStudents, setAllStudents] = useState<Student[]>([]);
+  const [studentLastUsedMap, setStudentLastUsedMap] = useState<Record<string, number>>({});
   const [searchTerm, setSearchTerm] = useState('');
   const [name, setName] = useState('');
   const [phone, setPhone] = useState('');
@@ -60,7 +62,27 @@ export function AddStudentDialog({
 
   const loadStudents = () => {
     const students = getStudents();
+    const sessions = getSessions();
     setAllStudents(students);
+    setStudentLastUsedMap(buildStudentLastUsedMap(sessions));
+  };
+
+  const buildStudentLastUsedMap = (sessions: Session[]): Record<string, number> => {
+    const map: Record<string, number> = {};
+
+    sessions.forEach((session) => {
+      const sessionTime =
+        session.date instanceof Date ? session.date.getTime() : new Date(session.date).getTime();
+
+      session.studentIds.forEach((studentId) => {
+        const existingTime = map[studentId];
+        if (existingTime === undefined || sessionTime > existingTime) {
+          map[studentId] = sessionTime;
+        }
+      });
+    });
+
+    return map;
   };
 
   const resetForm = () => {
@@ -148,17 +170,32 @@ export function AddStudentDialog({
   };
 
   // Filter students that aren't already in the session - only search by name after 2+ characters
-  const availableStudents = allStudents.filter(s => 
-    !existingStudentIds.includes(s.id) &&
-    (searchTerm.length < 2 || s.name.toLowerCase().includes(searchTerm.toLowerCase()))
-  );
+  const availableStudents = allStudents
+    .filter(s => 
+      !existingStudentIds.includes(s.id) &&
+      (searchTerm.length < 2 || s.name.toLowerCase().includes(searchTerm.toLowerCase()))
+    )
+    .sort((a, b) => {
+      const lastUsedA = studentLastUsedMap[a.id] ?? 0;
+      const lastUsedB = studentLastUsedMap[b.id] ?? 0;
+
+      if (lastUsedA === lastUsedB) {
+        return a.name.localeCompare(b.name);
+      }
+
+      return lastUsedB - lastUsedA;
+    });
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange} modal={true}>
-      <DialogContent className="max-w-2xl w-[95vw] max-h-[90vh] flex flex-col z-[60] p-0">
+      <DialogContent className="max-w-2xl w-[95vw] max-h-[90vh] flex flex-col z-[60] p-0 overflow-hidden">
+        {/* Accessible title for screen readers */}
+        <DialogTitle className="sr-only">
+          {t('studentForm.addStudentToSession')}
+        </DialogTitle>
         {/* Contextual Bar - matching other pages */}
         <div className="sticky top-0 z-40 bg-background border-b safe-top-bar">
-          <div className="container mx-auto px-4 pb-3">
+          <div className="container mx-auto px-4 pb-3 pt-3">
             <div className="flex items-center justify-between">
               <Button 
                 variant="ghost" 
@@ -185,32 +222,32 @@ export function AddStudentDialog({
           </div>
         </div>
 
-        {/* Add top padding to account for contextual bar */}
-        <div className="pt-20">
-          {/* Mode Toggle */}
-          <div className="flex gap-2 border-b pb-4 px-4">
-          <Button
-            variant={mode === 'select' ? 'default' : 'outline'}
-            onClick={() => setMode('select')}
-            className="flex-1"
-          >
-            <Users className="h-4 w-4 mr-2" />
-            {t('studentForm.selectExisting')}
-          </Button>
-          <Button
-            variant={mode === 'create' ? 'default' : 'outline'}
-            onClick={() => setMode('create')}
-            className="flex-1"
-          >
-            <UserPlus className="h-4 w-4 mr-2" />
-            {t('studentForm.createNew')}
-          </Button>
+        {/* Below header: mode toggle first, then content */}
+        <div className="flex-1 flex flex-col min-h-0">
+          {/* Mode Toggle directly under the header line */}
+          <div className="border-b px-4 py-3 flex gap-2">
+            <Button
+              variant={mode === 'select' ? 'default' : 'outline'}
+              onClick={() => setMode('select')}
+              className="flex-1"
+            >
+              <Users className="h-4 w-4 mr-2" />
+              {t('studentForm.selectExisting')}
+            </Button>
+            <Button
+              variant={mode === 'create' ? 'default' : 'outline'}
+              onClick={() => setMode('create')}
+              className="flex-1"
+            >
+              <UserPlus className="h-4 w-4 mr-2" />
+              {t('studentForm.createNew')}
+            </Button>
           </div>
 
-          <div className="flex-1 overflow-y-auto px-1">
+          <div className="flex-1 px-1 flex flex-col min-h-0">
           {mode === 'select' ? (
-            <div className="space-y-4 py-4">
-              {/* Search */}
+            <div className="space-y-4 py-4 flex-1 flex flex-col min-h-0">
+              {/* Search (fixed) */}
               <div className="space-y-2">
                 <Label htmlFor="search">{t('studentForm.searchStudents')}</Label>
                 <Input
@@ -221,8 +258,8 @@ export function AddStudentDialog({
                 />
               </div>
 
-              {/* Student List */}
-              <div className="space-y-2">
+              {/* Student List (scrolls independently below search) */}
+              <div className="space-y-2 flex-1 overflow-y-auto pr-1">
                 {availableStudents.length === 0 ? (
                   <Card>
                     <CardContent className="p-6 text-center">
@@ -232,27 +269,29 @@ export function AddStudentDialog({
                     </CardContent>
                   </Card>
                 ) : (
-                  availableStudents.map((student) => (
-                    <Card 
-                      key={student.id} 
-                      className="hover:shadow-sm transition-shadow cursor-pointer"
-                      onClick={() => handleSelectStudent(student.id)}
-                    >
-                      <CardContent className="p-4">
-                        <div className="flex items-center justify-between">
-                          <div>
-                            <p className="text-sm font-medium">{student.name}</p>
-                            <p className="text-xs text-muted-foreground">
-                              {t('studentForm.currentBalance')}: {student.balance} {Math.abs(student.balance) === 1 ? t('common.session') : t('common.sessions')}
-                            </p>
+                  <div className="space-y-2">
+                    {availableStudents.map((student) => (
+                      <Card 
+                        key={student.id} 
+                        className="hover:shadow-sm transition-shadow cursor-pointer"
+                        onClick={() => handleSelectStudent(student.id)}
+                      >
+                        <CardContent className="p-4">
+                          <div className="flex items-center justify-between">
+                            <div>
+                              <p className="text-sm font-medium">{student.name}</p>
+                              <p className="text-xs text-muted-foreground">
+                                {t('studentForm.currentBalance')}: {student.balance} {Math.abs(student.balance) === 1 ? t('common.session') : t('common.sessions')}
+                              </p>
+                            </div>
+                            <Button size="sm" variant="outline">
+                              {t('studentForm.add')}
+                            </Button>
                           </div>
-                          <Button size="sm" variant="outline">
-                            {t('studentForm.add')}
-                          </Button>
-                        </div>
-                      </CardContent>
-                    </Card>
-                  ))
+                        </CardContent>
+                      </Card>
+                    ))}
+                  </div>
                 )}
               </div>
             </div>

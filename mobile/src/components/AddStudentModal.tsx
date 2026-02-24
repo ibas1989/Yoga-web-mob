@@ -12,8 +12,8 @@ import {
   KeyboardAvoidingView,
   Platform,
 } from 'react-native';
-import { Student } from '@shared/types';
-import { saveStudent, getStudents, getSettings } from '../lib/storage';
+import { Student, Session } from '@shared/types';
+import { saveStudent, getStudents, getSettings, getSessions } from '../lib/storage';
 import { useTranslation } from 'react-i18next';
 import { Ionicons } from '@expo/vector-icons';
 
@@ -34,6 +34,7 @@ export function AddStudentModal({
   const [mode, setMode] = useState<'select' | 'create'>('select');
   const [allStudents, setAllStudents] = useState<Student[]>([]);
   const [searchTerm, setSearchTerm] = useState('');
+  const [studentLastUsedMap, setStudentLastUsedMap] = useState<Record<string, number>>({});
 
   // Create form fields
   const [name, setName] = useState('');
@@ -51,12 +52,34 @@ export function AddStudentModal({
     }
   }, [visible]);
 
-  const loadData = async () => {
-    const students = await getStudents();
-    setAllStudents(students);
+  const buildStudentLastUsedMap = (sessions: Session[]): Record<string, number> => {
+    const map: Record<string, number> = {};
 
-    const settings = await getSettings();
+    sessions.forEach((session) => {
+      const sessionTime =
+        session.date instanceof Date ? session.date.getTime() : new Date(session.date).getTime();
+
+      session.studentIds.forEach((studentId) => {
+        const existingTime = map[studentId];
+        if (existingTime === undefined || sessionTime > existingTime) {
+          map[studentId] = sessionTime;
+        }
+      });
+    });
+
+    return map;
+  };
+
+  const loadData = async () => {
+    const [students, sessions, settings] = await Promise.all([
+      getStudents(),
+      getSessions(),
+      getSettings(),
+    ]);
+
+    setAllStudents(students);
     setAvailableGoals(settings.availableGoals);
+    setStudentLastUsedMap(buildStudentLastUsedMap(sessions));
   };
 
   const resetForm = () => {
@@ -106,9 +129,20 @@ export function AddStudentModal({
     (s) => !existingStudentIds.includes(s.id)
   );
 
-  const filteredStudents = availableStudents.filter((s) =>
-    s.name.toLowerCase().includes(searchTerm.toLowerCase())
-  );
+  const filteredStudents = availableStudents
+    .filter((s) =>
+      s.name.toLowerCase().includes(searchTerm.toLowerCase())
+    )
+    .sort((a, b) => {
+      const lastUsedA = studentLastUsedMap[a.id] ?? 0;
+      const lastUsedB = studentLastUsedMap[b.id] ?? 0;
+
+      if (lastUsedA === lastUsedB) {
+        return a.name.localeCompare(b.name);
+      }
+
+      return lastUsedB - lastUsedA;
+    });
 
   return (
     <Modal visible={visible} animationType="slide" onRequestClose={onClose}>
@@ -172,6 +206,7 @@ export function AddStudentModal({
         <ScrollView 
           style={styles.content}
           contentContainerStyle={styles.contentContainer}
+          keyboardShouldPersistTaps="handled"
         >
           {mode === 'select' ? (
             <>
