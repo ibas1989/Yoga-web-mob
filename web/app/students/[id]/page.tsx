@@ -57,8 +57,8 @@ import { useTranslation } from '@/lib/hooks/useTranslation';
 export default function StudentDetailsPage() {
   const { t, ready, getCurrentLanguage } = useTranslation();
   const router = useRouter();
-  const params = useParams();
-  const studentId = params.id as string;
+  const params = useParams<{ id?: string }>();
+  const studentId = (params?.id ?? '') as string;
 
   const { 
     student: currentStudent, 

@@ -16,8 +16,8 @@ import { useTranslation } from '@/lib/hooks/useTranslation';
 
 export default function CalendarDayViewPage() {
   const router = useRouter();
-  const params = useParams();
-  const dateParam = params.date as string;
+  const params = useParams<{ date?: string }>();
+  const dateParam = (params?.date ?? '') as string;
   const { t, getCurrentLanguage } = useTranslation();
   
   const [selectedDate, setSelectedDate] = useState<Date | null>(null);
